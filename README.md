@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ☁️ CivitasRio - Painel de Qualidade do Ar
 
-## Getting Started
+Solução para o Desafio Front-end Sênior da Prefeitura do Rio de Janeiro.
+Um dashboard interativo que monitora a qualidade do ar em tempo real, focado em performance, acessibilidade e arquitetura moderna.
 
-First, run the development server:
+![Preview do Projeto](https://via.placeholder.com/1200x600?text=Preview+do+Dashboard+Civitas)
+*(Sugestão: Substitua este link por um print real da sua tela)*
+
+## 🚀 Tecnologias e Decisões Arquiteturais
+
+Este projeto foi construído sobre a stack mais moderna do ecossistema React para garantir SSR (Server-Side Rendering) e performance de ponta.
+
+- **Core:** [Next.js 15](https://nextjs.org/) (App Router) + React 19 (RC).
+- **Linguagem:** TypeScript (Tipagem estrita para segurança de dados).
+- **Estilização:** Tailwind CSS + [shadcn/ui](https://ui.shadcn.com/) (Componentes acessíveis e consistentes).
+- **Mapas:** Leaflet + React Leaflet (Renderizado via Lazy Loading para não bloquear a thread principal).
+- **Gráficos:** Recharts (Leve e baseada em SVG).
+- **Gerenciamento de Estado:** **URL Search Params**.
+  - *Decisão:* Em vez de usar `Redux` ou `Context` para filtros, o estado é mantido na URL (`?q=copa&status=ruim`). Isso permite que os links sejam compartilháveis e o estado persista após um refresh (UX Sênior).
+
+## ✨ Diferenciais Implementados
+
+1.  **React Compiler (Experimental):** Ativado para otimização automática de re-renderizações (adeus `useMemo`).
+2.  **Server Components:** A busca de dados e filtragem acontece no servidor, enviando menos JavaScript para o cliente.
+3.  **Lazy Loading:** O mapa pesado só é carregado no cliente, com um Skeleton Loading enquanto aguarda, melhorando o LCP (Largest Contentful Paint).
+4.  **Mock Inteligente:** Simulação de latência de rede (`delay`) para demonstrar tratamento de estados de carregamento (Skeletons).
+
+## 🛠️ Como Rodar o Projeto
+
+### Pré-requisitos
+- Node.js 18+
+- npm ou yarn
+
+### Instalação
 
 ```bash
+# 1. Clone o repositório
+git clone [https://github.com/SEU-USUARIO/civitas-frontend.git](https://github.com/SEU-USUARIO/civitas-frontend.git)
+
+# 2. Instale as dependências
+npm install
+
+# 3. Rode o servidor de desenvolvimento (com Turbopack)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Acesse http://localhost:3000.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+📂 Estrutura de Pastas
+Plaintext
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+src/
+├── app/
+│   ├── (dashboard)/      # Rotas principais (Home)
+│   ├── bairro/[id]/      # Rota dinâmica de detalhes (SSR)
+├── components/
+│   ├── map/              # Lógica complexa de Mapas (Client Side Wrappers)
+│   ├── dashboard/        # Componentes de negócio (Gráficos, Filtros)
+│   └── ui/               # Componentes base (Shadcn)
+├── services/             # Camada de API (Mockada)
+└── types/                # Definições TypeScript (Contratos)
+✅ Checklist de Requisitos
+[x] Mapa Interativo com Leaflet
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[x] Filtros por Bairro e Status
 
-## Learn More
+[x] Lista lateral com indicadores de AQI
 
-To learn more about Next.js, take a look at the following resources:
+[x] Página de Detalhes com Gráfico Histórico
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[x] Responsividade (Mobile First)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[x] Loading States (Skeletons)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Desenvolvido por Marcos Lima.
