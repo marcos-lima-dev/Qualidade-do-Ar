@@ -1,0 +1,37 @@
+name: CI - Civitas Quality Check
+
+# Quando esse workflow deve rodar?
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  quality-check:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Baixa o código do repositório
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Instala o Node.js (Versão 20 LTS)
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    # 3. Instala dependências (npm ci é mais rápido e seguro que npm install para CI)
+    - name: Install dependencies
+      run: npm ci
+
+    # 4. Verifica se o código segue os padrões (ESLint)
+    - name: Run Lint
+      run: npm run lint
+
+    # 5. Tenta fazer o build de produção (garante que não há erros de TS ou Next.js)
+    - name: Run Build
+      run: npm run build
