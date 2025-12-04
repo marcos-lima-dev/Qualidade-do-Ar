@@ -1,12 +1,11 @@
 // src/app/(dashboard)/page.tsx
-
 import Link from "next/link";
 import { getAirQualityData } from "@/services/air-quality";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import MapWrapper from "@/components/map/MapWrapper";
 import Filters from "@/components/dashboard/Filters"; 
-import { Flame, Gauge, Wind, ArrowRight, MapPin, Signal } from "lucide-react"; 
+import { Flame, Gauge, Wind, MapPin, Signal, ArrowRight } from "lucide-react"; 
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

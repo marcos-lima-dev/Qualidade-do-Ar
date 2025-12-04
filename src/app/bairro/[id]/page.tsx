@@ -1,43 +1,55 @@
 import { getBairroById } from "@/services/air-quality";
-import { Badge } from "@/components/ui/badge";
+// Removi o Badge daqui pois não estava sendo usado
 import { Button } from "@/components/ui/button";
 import AirQualityChart from "@/components/dashboard/AirQualityChart";
-import { ChevronLeft, Wind, MapPin } from "lucide-react"; // Requer: npm install lucide-react
+import { ChevronLeft, Wind, MapPin } from "lucide-react"; 
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// Definindo a interface para Params no Next.js 15+
+// ✅ SOLUÇÃO DO ERRO DE DATA:
+// Criamos esta função FORA do componente. Assim o React não reclama de impureza.
+function gerarHistoricoSimulado(aqiAtual: number) {
+  const agora = Date.now();
+  return [
+    { data: new Date(agora - 5 * 3600000).toISOString(), valor: Math.max(0, aqiAtual - 15) },
+    { data: new Date(agora - 4 * 3600000).toISOString(), valor: Math.max(0, aqiAtual - 5) },
+    { data: new Date(agora - 3 * 3600000).toISOString(), valor: Math.max(0, aqiAtual + 10) },
+    { data: new Date(agora - 2 * 3600000).toISOString(), valor: Math.max(0, aqiAtual + 2) },
+    { data: new Date(agora - 1 * 3600000).toISOString(), valor: Math.max(0, aqiAtual - 8) },
+    { data: new Date(agora).toISOString(), valor: aqiAtual },
+  ];
+}
+
 interface DetalhesProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function BairroDetailsPage(props: DetalhesProps) {
-  // 1. Resolve os params (obrigatório await no Next 15)
   const params = await props.params;
   const id = params.id;
 
-  // 2. Busca os dados
   const bairro = await getBairroById(id);
 
-  // 3. Trata erro 404 se não achar
   if (!bairro) {
     notFound();
   }
 
-  // Gera dados fictícios de histórico para o gráfico (já que nosso mock estático não tem array cheio)
-  // No "mundo real", isso viria do backend
-  const historicoSimulado = [
-    { data: new Date(Date.now() - 5 * 3600000).toISOString(), valor: bairro.aqi - 15 },
-    { data: new Date(Date.now() - 4 * 3600000).toISOString(), valor: bairro.aqi - 5 },
-    { data: new Date(Date.now() - 3 * 3600000).toISOString(), valor: bairro.aqi + 10 },
-    { data: new Date(Date.now() - 2 * 3600000).toISOString(), valor: bairro.aqi + 2 },
-    { data: new Date(Date.now() - 1 * 3600000).toISOString(), valor: bairro.aqi - 8 },
-    { data: new Date().toISOString(), valor: bairro.aqi },
-  ];
+  // Agora chamamos a função auxiliar
+  const historicoSimulado = gerarHistoricoSimulado(bairro.aqi);
+
+  // Lógica de cores para o header
+  const getHeaderColors = (status: string) => {
+    switch (status) {
+      case 'bom': return 'bg-green-50 border-green-200 text-green-700';
+      case 'moderado': return 'bg-yellow-50 border-yellow-200 text-yellow-700';
+      case 'ruim': return 'bg-orange-50 border-orange-200 text-orange-700';
+      case 'pessimo': return 'bg-red-50 border-red-200 text-red-700';
+      default: return 'bg-slate-50 border-slate-200 text-slate-700';
+    }
+  };
 
   return (
     <main className="container mx-auto p-4 md:p-8 space-y-6">
-      {/* Botão Voltar */}
       <Link href="/">
         <Button variant="ghost" className="gap-2 pl-0 hover:bg-transparent hover:text-blue-600">
           <ChevronLeft size={20} />
@@ -45,7 +57,6 @@ export default async function BairroDetailsPage(props: DetalhesProps) {
         </Button>
       </Link>
 
-      {/* Cabeçalho */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
         <div>
           <h1 className="text-4xl font-bold text-slate-900 mb-2">{bairro.bairro}</h1>
@@ -55,11 +66,7 @@ export default async function BairroDetailsPage(props: DetalhesProps) {
           </div>
         </div>
         
-        <div className={`flex flex-col items-end px-6 py-3 rounded-xl border ${
-            bairro.status === 'bom' ? 'bg-green-50 border-green-200 text-green-700' :
-            bairro.status === 'moderado' ? 'bg-yellow-50 border-yellow-200 text-yellow-700' :
-            'bg-red-50 border-red-200 text-red-700'
-        }`}>
+        <div className={`flex flex-col items-end px-6 py-3 rounded-xl border ${getHeaderColors(bairro.status)}`}>
             <span className="text-sm font-semibold uppercase tracking-wider">Qualidade do Ar</span>
             <span className="text-3xl font-bold">{bairro.aqi} AQI</span>
             <span className="text-xs font-medium uppercase mt-1 px-2 py-0.5 bg-white/50 rounded">
@@ -68,15 +75,11 @@ export default async function BairroDetailsPage(props: DetalhesProps) {
         </div>
       </div>
 
-      {/* Grid de Informações */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Gráfico (Ocupa 2 espaços) */}
         <div className="lg:col-span-2 min-h-[350px]">
           <AirQualityChart data={historicoSimulado} />
         </div>
 
-        {/* Poluentes (Cards Laterais) */}
         <div className="space-y-4">
             <h3 className="font-semibold text-slate-900 flex items-center gap-2">
                 <Wind size={18} />
