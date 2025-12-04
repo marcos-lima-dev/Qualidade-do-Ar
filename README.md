@@ -1,4 +1,4 @@
-# ☁️ CivitasRio - Painel de Qualidade do Ar
+# ☁️ CPainel de Qualidade do Ar - Rio
 
 Solução para o Desafio Front-end Sênior da Prefeitura do Rio de Janeiro.
 Um dashboard interativo que monitora a qualidade do ar em tempo real, focado em performance, acessibilidade e arquitetura moderna.
