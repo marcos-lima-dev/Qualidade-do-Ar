@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet"; // <--- Adicionado Tooltip
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Bairro } from "@/types";
@@ -45,9 +45,7 @@ export default function MapComponent({ data }: MapProps) {
 
   return (
     <div className="relative w-full h-full">
-      {/* LEGENDA AGORA NO CANTO INFERIOR ESQUERDO (bottom-4 left-4)
-         Isso evita cobrir o mapa e os botões de zoom (que costumam ficar na direita)
-      */}
+      {/* LEGENDA NO CANTO INFERIOR ESQUERDO */}
       <div className="absolute bottom-6 left-4 z-[1000] bg-white/95 backdrop-blur shadow-lg rounded-lg border border-slate-200 p-2.5 min-w-[130px]">
         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 border-b pb-1">
           Níveis de Qualidade
@@ -92,6 +90,17 @@ export default function MapComponent({ data }: MapProps) {
             position={[bairro.coordenadas.lat, bairro.coordenadas.lng]}
             icon={createCustomIcon(bairro.status)}
           >
+            {/* ✨ NOVIDADE: TOOLTIP AO PASSAR O MOUSE ✨ */}
+            <Tooltip 
+                direction="top" 
+                offset={[0, -32]} 
+                opacity={1} 
+                className="font-bold text-slate-700 text-xs px-2 py-1 shadow-sm border-none"
+            >
+                {bairro.bairro}
+            </Tooltip>
+
+            {/* Popup ao Clicar (Mantido) */}
             <Popup className="font-sans leaflet-popup-rounded">
               <div className="flex flex-col min-w-[160px]">
                 <div className="flex items-center gap-2 mb-2">
