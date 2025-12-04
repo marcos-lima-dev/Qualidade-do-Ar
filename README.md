@@ -3,7 +3,7 @@
 Solução para o Desafio Front-end Sênior da Prefeitura do Rio de Janeiro.
 Um dashboard interativo que monitora a qualidade do ar em tempo real, focado em performance, acessibilidade e arquitetura moderna.
 
-![Preview do Projeto](https://via.placeholder.com/1200x600?text=Preview+do+Dashboard+Civitas)
+![Preview do Dashboard CivitasRio](.github/assets/dashboard-preview.png)
 *(Sugestão: Substitua este link por um print real da sua tela)*
 
 ## 🚀 Tecnologias e Decisões Arquiteturais
