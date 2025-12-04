@@ -1,11 +1,8 @@
+@import "tailwindcss";
 
-@import "tw-animate-css";
+@plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -114,11 +111,20 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+/* AQUI ESTÁ A CORREÇÃO "SÊNIOR":
+   Sobrescrevemos o comportamento padrão do navegador para links 
+   para garantir que eles respeitem nossas classes do Tailwind.
+*/
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Remove sublinhado e força a herdar a cor do texto do pai */
+  a {
+    @apply no-underline text-inherit;
   }
 }
