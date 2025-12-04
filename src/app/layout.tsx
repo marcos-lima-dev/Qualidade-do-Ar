@@ -8,8 +8,21 @@ import { DemoBanner } from "@/components/layout/DemoBanner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Qualidade do Ar Rio | Demonstração Técnica",
-  description: "Projeto de avaliação técnica. Dados ilustrativos baseados em estrutura real.",
+  // Título que aparece na aba do navegador
+  title: "Qualidade do Ar Rio",
+  
+  // Descrição para SEO (Google)
+  description: "Monitoramento em tempo real da qualidade do ar nos bairros do Rio de Janeiro. Dados demonstrativos.",
+  
+  // Configuração para WhatsApp, LinkedIn, Twitter (Open Graph)
+  openGraph: {
+    title: "Qualidade do Ar Rio | Monitoramento",
+    description: "Saiba se é seguro praticar atividades ao ar livre no seu bairro agora.",
+    url: "https://qualidade-doar.netlify.app/",
+    siteName: "Qualidade do Ar Rio",
+    locale: "pt_BR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
