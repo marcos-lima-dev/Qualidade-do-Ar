@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet"; // <--- Adicionado Tooltip
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Bairro } from "@/types";
@@ -24,6 +24,7 @@ const getStatusColors = (status: string) => {
 const createCustomIcon = (status: string) => {
   const colors = getStatusColors(status);
   
+  // Voltamos ao ícone estático e sóbrio (sem classes de animação)
   const svgIcon = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${colors.hex}" class="w-8 h-8 drop-shadow-md filter">
       <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
@@ -45,7 +46,7 @@ export default function MapComponent({ data }: MapProps) {
 
   return (
     <div className="relative w-full h-full">
-      {/* LEGENDA NO CANTO INFERIOR ESQUERDO */}
+      {/* Legenda Estática e Sóbria (Sem animação) */}
       <div className="absolute bottom-6 left-4 z-[1000] bg-white/95 backdrop-blur shadow-lg rounded-lg border border-slate-200 p-2.5 min-w-[130px]">
         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 border-b pb-1">
           Níveis de Qualidade
@@ -90,7 +91,7 @@ export default function MapComponent({ data }: MapProps) {
             position={[bairro.coordenadas.lat, bairro.coordenadas.lng]}
             icon={createCustomIcon(bairro.status)}
           >
-            {/* ✨ NOVIDADE: TOOLTIP AO PASSAR O MOUSE ✨ */}
+            {/* Tooltip (Mantido - Isso é muito útil) */}
             <Tooltip 
                 direction="top" 
                 offset={[0, -32]} 
@@ -100,7 +101,7 @@ export default function MapComponent({ data }: MapProps) {
                 {bairro.bairro}
             </Tooltip>
 
-            {/* Popup ao Clicar (Mantido) */}
+            {/* Popup (Mantido - Detalhes ao clicar) */}
             <Popup className="font-sans leaflet-popup-rounded">
               <div className="flex flex-col min-w-[160px]">
                 <div className="flex items-center gap-2 mb-2">
